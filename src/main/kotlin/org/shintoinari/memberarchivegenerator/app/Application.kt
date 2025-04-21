@@ -15,8 +15,14 @@ interface Application{
         val years: Set<Year> = defaultYears,
      ) {
         companion object {
-            private val defaultInputLocation: Path = Path(System.getProperty("user.dir"), "Downloads", "Video sheet - YouTube Member Videos.csv")
-            private val defaultYears: Set<Year> = setOf(Year.now())
+            operator fun invoke(block: (DSL) -> Unit): Config =
+                DSL().apply(block).toConfig()
+
+            /** We set a default path based on where things usually are downloaded in MacOS/Windows */
+            private val defaultInputLocation: Path = Path(System.getProperty("user.home"), "Downloads", "Video sheet - YouTube Member Videos.csv")
+
+            /** We set this to all the years we currently actively have data for */
+            private val defaultYears: Set<Year> = (2021 .. Year.now().value).map { Year.of(it) }.toSet()
         }
 
         data class DSL(
@@ -30,13 +36,4 @@ interface Application{
         }
 
     }
-
-    companion object {
-        operator fun invoke(block: Config.DSL.() -> Unit): Application =
-            invoke(Config.DSL().apply(block).toConfig())
-
-        operator fun invoke(config: Config): Application =
-            DefaultApplication(config)
-    }
 }
-
