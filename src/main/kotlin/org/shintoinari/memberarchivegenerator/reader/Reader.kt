@@ -1,9 +1,8 @@
 package org.shintoinari.memberarchivegenerator.reader
 
 import org.shintoinari.memberarchivegenerator.data.Video
+import java.nio.file.Path
 
-interface Reader<out T> {
-    suspend fun read(): Result<T>
-}
+interface Reader<in A, out R> : suspend (A) -> Result<R>
 
-typealias VideosReader = Reader<List<Video>>
+typealias VideosReader = Reader<Path, List<Video>>

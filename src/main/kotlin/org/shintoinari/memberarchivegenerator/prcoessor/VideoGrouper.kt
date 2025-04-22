@@ -2,6 +2,7 @@ package org.shintoinari.memberarchivegenerator.prcoessor
 
 import org.shintoinari.memberarchivegenerator.data.Video
 import org.shintoinari.memberarchivegenerator.data.VideoGroup
+import org.shintoinari.memberarchivegenerator.util.logger
 import org.shintoinari.memberarchivegenerator.util.zipFull
 import java.time.LocalDate
 import java.time.Year
@@ -12,22 +13,29 @@ class DefaultVideoGrouper : VideoGrouper {
 
     override fun invoke(videos: List<Video>): List<VideoGroup> =
         videos.filter {
-            it.isActive && it.category != Video.Category.UNCATEGORIZED
+            it.isActive
         }.let {
             toGroups(it)
-        }
+        }.sortedByDescending { it.year }
 
     private fun toGroups(videos: List<Video>): List<VideoGroup> =
-        videos.groupBy { Year.of(it.serviceDate.year) }.map { (year, videosInYear) ->
+        videos.groupBy {
+            Year.of(it.serviceDate.year)
+        }.map { (year, videosInYear) ->
             toGroup(year, videosInYear)
         }
 
 
     private fun toGroup(year: Year, videosInYear: List<Video>): VideoGroup =
-        videosInYear.groupBy { it.serviceDate }.flatMap { (serviceDate, videosOnDate) ->
+        videosInYear.groupBy {
+            it.serviceDate
+        }.toSortedMap(
+            // Ensure we sort the row groups, but keep original row order for pairings
+            compareByDescending { it }
+        ).flatMap { (serviceDate, videosOnDate) ->
             toRows(serviceDate, videosOnDate)
         }.let { rows ->
-            VideoGroup(year, rows)
+            VideoGroup(year, rows.sortedByDescending { it.date })
         }
 
     /**

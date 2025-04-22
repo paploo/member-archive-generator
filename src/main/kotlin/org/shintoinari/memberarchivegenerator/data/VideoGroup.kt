@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.Year
 
 @ConsistentCopyVisibility
-data class VideoGroup private constructor (
+data class VideoGroup(
     val year: Year,
     val rows: List<Row>
 ) {
@@ -17,23 +17,19 @@ data class VideoGroup private constructor (
         }
     }
 
-    companion object {
-        operator fun invoke(year: Year, rows: List<Row>) : VideoGroup = VideoGroup(year, rows.sortedBy { it.date })
-    }
-
     data class Row(
         val date: LocalDate,
-        val mainColumn: Video?,
+        val saiColumn: Video?,
         val closingColumn: Video?
     ) {
 
         init {
-            assert(mainColumn != null || closingColumn != null) {
+            assert(saiColumn != null || closingColumn != null) {
                 "Both columns cannot be empty."
             }
 
-            assert(mainColumn?.let { it.serviceDate == date } ?: true ) {
-                "Main column video's date must $date but got ${mainColumn?.serviceDate}."
+            assert(saiColumn?.let { it.serviceDate == date } ?: true ) {
+                "Main column video's date must $date but got ${saiColumn?.serviceDate}."
             }
 
             assert(closingColumn?.let { it.serviceDate == date } ?: true ) {

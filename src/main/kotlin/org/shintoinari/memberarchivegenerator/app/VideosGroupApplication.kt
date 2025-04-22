@@ -1,20 +1,16 @@
 package org.shintoinari.memberarchivegenerator.app
 
-import org.shintoinari.memberarchivegenerator.data.Video
-import org.shintoinari.memberarchivegenerator.data.VideoGroup
 import org.shintoinari.memberarchivegenerator.prcoessor.DefaultVideoGrouper
 import org.shintoinari.memberarchivegenerator.prcoessor.VideoGrouper
+import org.shintoinari.memberarchivegenerator.reader.GoogleSheetReader
 import org.shintoinari.memberarchivegenerator.reader.VideosReader
 import org.shintoinari.memberarchivegenerator.util.flatMap
+import org.shintoinari.memberarchivegenerator.writer.DebugWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class VideosGroupApplication(
     override val config: Application.Config
 ) : Application {
-
-    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     /**
      * The main application workflow:
@@ -22,24 +18,18 @@ class VideosGroupApplication(
      * 2. Write the domain models out.
      */
     override suspend fun run(): Result<Unit> =
-        reader.read().map { videos ->
+        Result.success(config.inputLocation).flatMap { path ->
+            reader(path)
+        }.map { videos ->
             videoGrouper(videos)
         }.flatMap { groups ->
-            writer.write(groups)
+            writer(groups)
         }
 
 
-    private val reader: VideosReader by lazy {
-        object : VideosReader {
-            override suspend fun read(): Result<List<Video>> = Result.runCatching { TODO() }
-        }
-    }
+    private val reader: VideosReader = GoogleSheetReader()
 
-    private val writer: VideoGroupsWriter by lazy {
-        object : VideoGroupsWriter {
-            override suspend fun write(values: List<VideoGroup>): Result<Unit> = Result.success(Unit)
-        }
-    }
+    private val writer: VideoGroupsWriter = DebugWriter()
 
     private val videoGrouper: VideoGrouper = DefaultVideoGrouper()
 
