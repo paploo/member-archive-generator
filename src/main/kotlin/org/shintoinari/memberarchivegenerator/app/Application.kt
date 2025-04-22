@@ -8,7 +8,7 @@ interface Application{
 
     val config: Config
 
-    suspend fun run()
+    suspend fun run(): Result<Unit>
 
     data class Config(
         val inputLocation: Path = defaultInputLocation,

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration>
+    <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
+    <import class="ch.qos.logback.core.ConsoleAppender"/>
+
+    <appender name="STDERR" class="ConsoleAppender">
+        <target>System.err</target>
+        <encoder class="PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDERR"/>
+    </root>
+
+    <logger name="net.paploo.goi.domain.tools.furiganatemplate.parsers" level="INFO"/>
+    <logger name="net.paploo.goi.pipeline.vocabulary.transformer.AutoConjugationTransformer" level="INFO"/>
+
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="org.jooq.Constants" level="WARN"/>
+    <logger name="org.jooq.tools.LoggerListener" level="INFO"/>
+</configuration>

@@ -20,4 +20,11 @@ class ApplicationArgs(parser: ArgParser) {
         if(years.isNotEmpty()) { dsl.years = years.toSet() }
     }
 
+    companion object {
+        fun parse(args: Array<String>): Result<Application.Config> =
+            Result.runCatching {
+                ArgParser(args).parseInto(::ApplicationArgs).toConfig()
+            }
+    }
+
 }

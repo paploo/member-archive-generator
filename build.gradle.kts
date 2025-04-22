@@ -5,6 +5,7 @@ val kotlin_coroutines_version: String by project
 val arg_parser_version: String by project
 val commons_csv_version: String by project
 val kotest_version: String by project
+val logback_version: String by project
 
 plugins {
     kotlin("jvm") version "2.1.20"
@@ -23,8 +24,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_coroutines_version}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlin_serialization_version}")
 
+    implementation("ch.qos.logback:logback-classic:${logback_version}")
     implementation("com.xenomachina:kotlin-argparser:${arg_parser_version}")
-
     implementation("org.apache.commons:commons-csv:${commons_csv_version}")
 
     testImplementation("io.kotest:kotest-runner-junit5:${kotest_version}")
