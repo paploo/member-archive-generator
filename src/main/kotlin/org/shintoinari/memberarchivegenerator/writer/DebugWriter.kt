@@ -5,8 +5,11 @@ import kotlin.collections.forEach
 
 class DebugWriter : VideoGroupsWriter {
 
-    override suspend fun invoke(videos: List<VideoGroup>): Result<Unit> {
-        videos.forEach { group ->
+    override suspend fun write(
+        context: VideoGroupsWriter.Context,
+        argument: List<VideoGroup>
+    ): Result<Unit> {
+        argument.filter { it.year in context.years }.forEach { group ->
             println(group.year)
             group.rows.forEach { row ->
                 println("\t${row.date}")
@@ -17,4 +20,5 @@ class DebugWriter : VideoGroupsWriter {
 
         return Result.success(Unit)
     }
+
 }

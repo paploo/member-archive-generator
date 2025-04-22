@@ -14,10 +14,10 @@ data class Video(
     val isNotActive: Boolean = !isActive
 
     enum class Category {
-        TSUKINAMI_SAI,
-        TSUKINAMI_CLOSING,
-        OTHER_SAI,
-        OTHER_CLOSING;
+        TsukinamiSai,
+        TsukinamiClosing,
+        OtherSai,
+        OtherCLosing;
     }
 
 }

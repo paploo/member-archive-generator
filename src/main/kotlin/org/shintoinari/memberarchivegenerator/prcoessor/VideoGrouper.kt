@@ -2,7 +2,6 @@ package org.shintoinari.memberarchivegenerator.prcoessor
 
 import org.shintoinari.memberarchivegenerator.data.Video
 import org.shintoinari.memberarchivegenerator.data.VideoGroup
-import org.shintoinari.memberarchivegenerator.util.logger
 import org.shintoinari.memberarchivegenerator.util.zipFull
 import java.time.LocalDate
 import java.time.Year
@@ -50,10 +49,10 @@ class DefaultVideoGrouper : VideoGrouper {
         // Filter videos by category
         val videosByCategory = vidoesOnDate.groupBy { it.category }
 
-        val tsukinamiSai = vidoesOnDate.filter { it.category == Video.Category.TSUKINAMI_SAI }
-        val tsukinamiClosing = vidoesOnDate.filter { it.category == Video.Category.TSUKINAMI_CLOSING }
-        val otherSai = vidoesOnDate.filter { it.category == Video.Category.OTHER_SAI }
-        val otherClosing = vidoesOnDate.filter { it.category == Video.Category.OTHER_CLOSING }
+        val tsukinamiSai = vidoesOnDate.filter { it.category == Video.Category.TsukinamiSai }
+        val tsukinamiClosing = vidoesOnDate.filter { it.category == Video.Category.TsukinamiClosing }
+        val otherSai = vidoesOnDate.filter { it.category == Video.Category.OtherSai }
+        val otherClosing = vidoesOnDate.filter { it.category == Video.Category.OtherCLosing }
 
         // 1. First row with tsukinami_sai and tsukinami_closing, if any
         val tsukinamiRows = buildRows(date, tsukinamiSai, tsukinamiClosing)

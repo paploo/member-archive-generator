@@ -19,11 +19,11 @@ class VideosGroupApplication(
      */
     override suspend fun run(): Result<Unit> =
         Result.success(config.inputLocation).flatMap { path ->
-            reader(path)
+            reader.read(config.toReadContext())
         }.map { videos ->
             videoGrouper(videos)
         }.flatMap { groups ->
-            writer(groups)
+            writer.write(config.toWriteContext(), groups)
         }
 
 
@@ -32,5 +32,16 @@ class VideosGroupApplication(
     private val writer: VideoGroupsWriter = DebugWriter()
 
     private val videoGrouper: VideoGrouper = DefaultVideoGrouper()
+
+    private fun Application.Config.toReadContext(): VideosReader.Context =
+        VideosReader.Context(
+            inputLocation = inputLocation
+        )
+
+    private fun Application.Config.toWriteContext(): VideoGroupsWriter.Context =
+        VideoGroupsWriter.Context(
+            years = config.years,
+            mode = config.outputMode,
+        )
 
 }

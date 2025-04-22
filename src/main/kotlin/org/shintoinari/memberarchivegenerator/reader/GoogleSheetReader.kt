@@ -24,9 +24,9 @@ class GoogleSheetReader: VideosReader {
      *
      * The conversion has some trickiness
      */
-    override suspend fun invoke(fileLocation: Path): Result<List<Video>> =
+    override suspend fun read(context: VideosReader.Context): Result<List<Video>> =
         Result.runCatching {
-            CSVParser.parse(fileLocation, StandardCharsets.UTF_8, format)
+            CSVParser.parse(context.inputLocation, StandardCharsets.UTF_8, format)
         }.mapCatching { parser ->
             parser.map { it.toVideo() }
         }
@@ -55,12 +55,12 @@ class GoogleSheetReader: VideosReader {
 
         val categoryField: CsvField<Video.Category> = CsvField.OptionalSourceValue("Category") {
             when (it?.lowercase()?.trim()) {
-                "tsukinami-sai" -> Video.Category.TSUKINAMI_SAI
-                "tsukinami-closing" -> Video.Category.TSUKINAMI_CLOSING
-                "other-sai" -> Video.Category.OTHER_SAI
-                "other-closing" -> Video.Category.OTHER_CLOSING
-                "skip" -> Video.Category.OTHER_SAI //TODO: Make this its own column in sheet.
-                null -> Video.Category.OTHER_SAI //TODO: Fill these in directly in the sheet.
+                "tsukinami-sai" -> Video.Category.TsukinamiSai
+                "tsukinami-closing" -> Video.Category.TsukinamiClosing
+                "other-sai" -> Video.Category.OtherSai
+                "other-closing" -> Video.Category.OtherCLosing
+                "skip" -> Video.Category.OtherSai //TODO: Make this its own column in sheet.
+                null -> Video.Category.OtherSai //TODO: Fill these in directly in the sheet.
                 else -> throw IllegalArgumentException("Unknown category: $it")
             }
         }

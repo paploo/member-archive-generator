@@ -3,6 +3,14 @@ package org.shintoinari.memberarchivegenerator.reader
 import org.shintoinari.memberarchivegenerator.data.Video
 import java.nio.file.Path
 
-interface Reader<in A, out R> : suspend (A) -> Result<R>
+interface Reader<in C, out R> {
+    suspend fun read(context: C): Result<R>
+}
 
-typealias VideosReader = Reader<Path, List<Video>>
+interface VideosReader : Reader<VideosReader.Context, List<Video>> {
+
+    data class Context(
+        val inputLocation: Path
+    )
+
+}
