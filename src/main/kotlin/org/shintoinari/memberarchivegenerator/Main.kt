@@ -8,11 +8,12 @@ import org.slf4j.LoggerFactory
 
 suspend fun main(args: Array<String>): Unit =
     ApplicationArgs.parse(args).map { config ->
+        logger.debug("config: {}", config)
         VideosGroupApplication(config)
     }.flatMap { application ->
         application.run()
     }.recover { th ->
-        logger.error("Application failed to run: $th", th)
+        logger.error("APPLICATION FAILED TO RUN: error = $th", th)
         Unit
     }.getOrThrow()
 
