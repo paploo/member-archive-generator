@@ -22,6 +22,8 @@ class VideosGroupApplication(
             reader.read(config.toReadContext())
         }.map { videos ->
             videoGrouper(videos)
+        }.map { groups ->
+            groups.filter { it.year in config.years }
         }.flatMap { groups ->
             writer.write(config.toWriteContext(), groups)
         }

@@ -28,10 +28,7 @@ class DefaultVideoGrouper : VideoGrouper {
     private fun toGroup(year: Year, videosInYear: List<Video>): VideoGroup =
         videosInYear.groupBy {
             it.serviceDate
-        }.toSortedMap(
-            // Ensure we sort the row groups, but keep original row order for pairings
-            compareByDescending { it }
-        ).flatMap { (serviceDate, videosOnDate) ->
+        }.flatMap { (serviceDate, videosOnDate) ->
             toRows(serviceDate, videosOnDate)
         }.let { rows ->
             VideoGroup(year, rows.sortedByDescending { it.date })
