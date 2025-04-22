@@ -25,7 +25,7 @@ object Main {
         }.getOrThrow()
 
     private fun ShowHelpException.helpMessage(): String =
-        StringWriter().let { writer ->
+        StringWriter().use { writer ->
             printUserMessage(writer, commandLineName, terminalColumns)
             writer.toString()
         }

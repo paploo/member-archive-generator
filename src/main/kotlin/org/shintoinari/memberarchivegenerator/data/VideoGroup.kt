@@ -18,21 +18,21 @@ data class VideoGroup(
 
     data class Row(
         val date: LocalDate,
-        val saiColumn: Video?,
-        val closingColumn: Video?
+        val saiVideo: Video?,
+        val closingVideo: Video?
     ) {
 
         init {
-            assert(saiColumn != null || closingColumn != null) {
+            assert(saiVideo != null || closingVideo != null) {
                 "Both columns cannot be empty."
             }
 
-            assert(saiColumn?.let { it.serviceDate == date } ?: true ) {
-                "Main column video's date must $date but got ${saiColumn?.serviceDate}."
+            assert(saiVideo?.let { it.serviceDate == date } ?: true ) {
+                "Main column video's date must $date but got ${saiVideo?.serviceDate}."
             }
 
-            assert(closingColumn?.let { it.serviceDate == date } ?: true ) {
-                "Closing column video's date must $date but got ${closingColumn?.serviceDate}."
+            assert(closingVideo?.let { it.serviceDate == date } ?: true ) {
+                "Closing column video's date must $date but got ${closingVideo?.serviceDate}."
             }
         }
 

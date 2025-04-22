@@ -5,11 +5,15 @@ import org.shintoinari.memberarchivegenerator.prcoessor.VideoGrouper
 import org.shintoinari.memberarchivegenerator.reader.GoogleSheetReader
 import org.shintoinari.memberarchivegenerator.reader.VideosReader
 import org.shintoinari.memberarchivegenerator.util.flatMap
-import org.shintoinari.memberarchivegenerator.writer.DebugWriter
+import org.shintoinari.memberarchivegenerator.writer.templates.DebugVideoWriterTemplate
+import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
 
 class VideosGroupApplication(
-    override val config: Application.Config
+    override val config: Application.Config,
+    private val videoGrouper: VideoGrouper = DefaultVideoGrouper(),
+    private val reader: VideosReader = GoogleSheetReader(),
+    private val writer: VideoGroupsWriter = TemplatedVideoGroupsWriter(DebugVideoWriterTemplate()),
 ) : Application {
 
     /**
@@ -27,13 +31,6 @@ class VideosGroupApplication(
         }.flatMap { groups ->
             writer.write(config.toWriteContext(), groups)
         }
-
-
-    private val reader: VideosReader = GoogleSheetReader()
-
-    private val writer: VideoGroupsWriter = DebugWriter()
-
-    private val videoGrouper: VideoGrouper = DefaultVideoGrouper()
 
     private fun Application.Config.toReadContext(): VideosReader.Context =
         VideosReader.Context(
