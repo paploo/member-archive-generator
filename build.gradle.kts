@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.provideDelegate
+import com.adarshr.gradle.testlogger.theme.ThemeType
 
 val kotlin_serialization_version: String by project
 val kotlin_coroutines_version: String by project
@@ -11,6 +12,7 @@ plugins {
     kotlin("jvm") version "2.1.20"
     kotlin("plugin.serialization") version "2.1.20"
     application
+    id("com.adarshr.test-logger") version "4.0.0"
 }
 
 group = "org.shintoinari"
@@ -34,6 +36,10 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    testlogger {
+        //theme = ThemeType.STANDARD_PARALLEL
+        theme = ThemeType.PLAIN_PARALLEL
+    }
 }
 
 kotlin {

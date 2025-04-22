@@ -6,7 +6,7 @@ interface CsvField<T> {
     val name: String
     fun get(record: CSVRecord): T
 
-    class NullableSourceValue<T>(
+    class OptionalSourceValue<T>(
         override val name: String,
         private val getter: (String?) -> T
     ) : CsvField<T> {
@@ -18,7 +18,7 @@ interface CsvField<T> {
             }.getOrThrow()
     }
 
-    class NonNullableSourceValue<T>(
+    class RequiredSourceValue<T>(
         override val name: String,
         private val getter: (String) -> T
     ) : CsvField<T> {

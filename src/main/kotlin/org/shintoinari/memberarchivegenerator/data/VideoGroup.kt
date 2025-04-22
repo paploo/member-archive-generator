@@ -3,7 +3,6 @@ package org.shintoinari.memberarchivegenerator.data
 import java.time.LocalDate
 import java.time.Year
 
-@ConsistentCopyVisibility
 data class VideoGroup(
     val year: Year,
     val rows: List<Row>

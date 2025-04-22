@@ -33,49 +33,53 @@ class GoogleSheetReader: VideosReader {
 
     private fun CSVRecord.toVideo(): Video =
         Video(
-            youTubeId = get(youTubeIdField),
-            serviceDate = get(serviceDateField),
-            category = get(categoryField),
-            titleEn = get(titleEnField),
-            titleJp = get(titleJpField),
-            isActive = get(isActiveField),
+            youTubeId = get(CsvFields.youTubeIdField),
+            serviceDate = get(CsvFields.serviceDateField),
+            category = get(CsvFields.categoryField),
+            titleEn = get(CsvFields.titleEnField),
+            titleJp = get(CsvFields.titleJpField),
+            isActive = get(CsvFields.isActiveField),
         ).also {
             logger.debug(it.toString())
         }
 
-    val youTubeIdField: CsvField<String> = CsvField.NonNullableSourceValue("ID") {
-        it
-    }
+    private object CsvFields {
 
-    val serviceDateField: CsvField<LocalDate> = CsvField.NonNullableSourceValue("Service Date") {
-        LocalDate.parse(it)
-    }
-
-    val categoryField: CsvField<Video.Category> = CsvField.NullableSourceValue("Category") {
-        when(it?.lowercase()?.trim()) {
-            "tsukinami-sai" -> Video.Category.TSUKINAMI_SAI
-            "tsukinami-closing" -> Video.Category.TSUKINAMI_CLOSING
-            "other-sai" -> Video.Category.OTHER_SAI
-            "other-closing" -> Video.Category.OTHER_CLOSING
-            "skip" -> Video.Category.OTHER_SAI //TODO: Make this its own column in sheet.
-            null -> Video.Category.OTHER_SAI //TODO: Fill these in directly in the sheet.
-            else -> throw IllegalArgumentException("Unknown category: $it")
+        val youTubeIdField: CsvField<String> = CsvField.RequiredSourceValue("ID") {
+            it
         }
-    }
 
-    val isActiveField: CsvField<Boolean> = CsvField.NullableSourceValue("Category") {
-        when(it?.lowercase()?.trim()) {
-            "skip" -> false
-            else -> true
+        val serviceDateField: CsvField<LocalDate> = CsvField.RequiredSourceValue("Service Date") {
+            LocalDate.parse(it)
         }
-    }
 
-    val titleEnField: CsvField<String?> = CsvField.NullableSourceValue("Title EN") {
-        it
-    }
+        val categoryField: CsvField<Video.Category> = CsvField.OptionalSourceValue("Category") {
+            when (it?.lowercase()?.trim()) {
+                "tsukinami-sai" -> Video.Category.TSUKINAMI_SAI
+                "tsukinami-closing" -> Video.Category.TSUKINAMI_CLOSING
+                "other-sai" -> Video.Category.OTHER_SAI
+                "other-closing" -> Video.Category.OTHER_CLOSING
+                "skip" -> Video.Category.OTHER_SAI //TODO: Make this its own column in sheet.
+                null -> Video.Category.OTHER_SAI //TODO: Fill these in directly in the sheet.
+                else -> throw IllegalArgumentException("Unknown category: $it")
+            }
+        }
 
-    val titleJpField: CsvField<String?> = CsvField.NullableSourceValue("Title JP") {
-        it
+        val isActiveField: CsvField<Boolean> = CsvField.OptionalSourceValue("Category") {
+            when (it?.lowercase()?.trim()) {
+                "skip" -> false
+                else -> true
+            }
+        }
+
+        val titleEnField: CsvField<String?> = CsvField.OptionalSourceValue("Title EN") {
+            it
+        }
+
+        val titleJpField: CsvField<String?> = CsvField.OptionalSourceValue("Title JP") {
+            it
+        }
+
     }
 
 }
