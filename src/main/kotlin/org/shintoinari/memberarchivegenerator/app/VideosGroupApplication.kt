@@ -8,12 +8,13 @@ import org.shintoinari.memberarchivegenerator.util.flatMap
 import org.shintoinari.memberarchivegenerator.writer.templates.DebugVideoWriterTemplate
 import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
+import org.shintoinari.memberarchivegenerator.writer.templates.WordPressSourceTemplate
 
 class VideosGroupApplication(
     override val config: Application.Config,
     private val videoGrouper: VideoGrouper = DefaultVideoGrouper(),
     private val reader: VideosReader = GoogleSheetReader(),
-    private val writer: VideoGroupsWriter = TemplatedVideoGroupsWriter(DebugVideoWriterTemplate()),
+    private val writer: VideoGroupsWriter = TemplatedVideoGroupsWriter(WordPressSourceTemplate()),
 ) : Application {
 
     /**

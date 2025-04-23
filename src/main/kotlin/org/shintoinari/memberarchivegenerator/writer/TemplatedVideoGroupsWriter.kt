@@ -24,6 +24,3 @@ class TemplatedVideoGroupsWriter(
     }
 
 }
-
-//private val VideoGroup.wordPressId: UUID get() =
-//    UUID.nameUUIDFromBytes(year.toString().toByteArray())

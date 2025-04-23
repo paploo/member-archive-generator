@@ -6,6 +6,7 @@ import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
 
 open class CallbackTemplate : TemplatedVideoGroupsWriter.Template {
+
     open fun startPage(context: VideoGroupsWriter.Context, groups: Collection<VideoGroup>): String = ""
     open fun endPage(context: VideoGroupsWriter.Context, groups: Collection<VideoGroup>): String = ""
 
@@ -24,7 +25,7 @@ open class CallbackTemplate : TemplatedVideoGroupsWriter.Template {
     ): String =
         StringBuffer().let { buffer ->
             when(context.mode) {
-                VideoGroupsWriter.OutputMode.FullPage -> buffer.append(startPage(context, groups)).append(startPage(context, groups))
+                VideoGroupsWriter.OutputMode.FullPage -> buffer.append(startPage(context, groups))
                 VideoGroupsWriter.OutputMode.YearBlocksOnly -> buffer
             }
 
@@ -43,7 +44,7 @@ open class CallbackTemplate : TemplatedVideoGroupsWriter.Template {
             }
 
             when(context.mode) {
-                VideoGroupsWriter.OutputMode.FullPage -> buffer.append(startPage(context, groups)).append(endPage(context, groups))
+                VideoGroupsWriter.OutputMode.FullPage -> buffer.append(endPage(context, groups))
                 VideoGroupsWriter.OutputMode.YearBlocksOnly -> buffer
             }
         }.toString()

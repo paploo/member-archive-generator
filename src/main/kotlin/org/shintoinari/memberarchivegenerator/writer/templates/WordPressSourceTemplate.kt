@@ -1,7 +1,116 @@
 package org.shintoinari.memberarchivegenerator.writer.templates
 
-class WordPressSourceTemplate {
+import org.shintoinari.memberarchivegenerator.data.Video
+import org.shintoinari.memberarchivegenerator.data.VideoGroup
+import org.shintoinari.memberarchivegenerator.util.ChronoFormatter
+import org.shintoinari.memberarchivegenerator.util.en
+import org.shintoinari.memberarchivegenerator.util.format
+import org.shintoinari.memberarchivegenerator.util.jp
+import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
+import java.time.format.DateTimeFormatter
+import java.util.UUID
+import javax.swing.text.DateFormatter
+
+class WordPressSourceTemplate : CallbackTemplate() {
+
+    override fun startPage(
+        context: VideoGroupsWriter.Context,
+        groups: Collection<VideoGroup>
+    ): String = """
+        <!-- wp:paragraph {"align":"center"} -->
+        <p class="has-text-align-center"><strong>Welcome to the Shinto Inari Kai member's video archive!</strong></p>
+        <!-- /wp:paragraph -->
+    """.trimIndent() + "\n\n"
+
+    override fun endPage(
+        context: VideoGroupsWriter.Context,
+        groups: Collection<VideoGroup>
+    ): String = ""
+
+    override fun startGroup(
+        context: VideoGroupsWriter.Context,
+        group: VideoGroup
+    ): String = """
+        <!-- wp:advgb/accordions {"id":"advgb-accordions-${group.wordPressId}","changed":true,"rootBlockId":"${group.wordPressId}"} -->
+        <div class="wp-block-advgb-accordions advgb-accordions-${group.wordPressId} advgb-accordion-wrapper">
+            <!-- wp:advgb/accordion-item {"header":"${group.year}年","changed":true,"rootBlockId":"${group.wordPressId}"} -->
+            <div class="wp-block-advgb-accordion-item advgb-accordion-item" style="margin-bottom:15px">
+                <div class="advgb-accordion-header"
+                    style="background-color:#000;color:#eee;border-style:solid;border-width:1px;border-radius:2px"><span
+                        class="advgb-accordion-header-icon"><svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24">
+                            <path fill="none" d="M0,0h24v24H0V0z"></path>
+                            <path
+                                d="M12,5.83L15.17,9l1.41-1.41L12,3L7.41,7.59L8.83,9L12,5.83z M12,18.17L8.83,15l-1.41,1.41L12,21l4.59-4.59L15.17,15 L12,18.17z">
+                            </path>
+                        </svg></span>
+                    <h4 class="advgb-accordion-header-title" style="color:inherit">${group.year}年</h4>
+                </div>
+                <div class="advgb-accordion-body"
+                    style="border-style:solid !important;border-width:1px !important;border-color:undefined !important;border-top:none !important;border-radius:2px !important">
+                    <!-- wp:table {"className":"is-style-stripes","customStyle":"","identifyColor":""} -->
+                    <figure class="wp-block-table is-style-stripes">
+                        <table class="has-fixed-layout">
+                            <thead>
+                                <tr>
+                                    <th class="has-text-align-center" data-align="center"></th>
+                                    <th class="has-text-align-center" data-align="center">Ceremony Video</th>
+                                    <th class="has-text-align-center" data-align="center">Closing Talk Video</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+    """.trimIndent()
+
+    override fun endGroup(
+        context: VideoGroupsWriter.Context,
+        group: VideoGroup
+    ): String = """
+                        </tbody>
+                        </table>
+                    </figure>
+                    <!-- /wp:table -->
+                </div>
+            </div>
+            <!-- /wp:advgb/accordion-item -->
+        </div>
+        <!-- /wp:advgb/accordions -->
+    """.trimIndent() + "\n\n"
+
+    override fun startRow(
+        context: VideoGroupsWriter.Context,
+        row: VideoGroup.Row
+    ): String = """
+        <td class="has-text-align-center" data-align="center">
+            <strong>${row.date.format(ChronoFormatter.en)}</strong>
+            <br>
+            <strong>${row.date.format(ChronoFormatter.jp)}</strong>
+        </td>
+    """.trimIndent() + "\n"
+
+    override fun endRow(
+        context: VideoGroupsWriter.Context,
+        row: VideoGroup.Row
+    ): String {
+        return super.endRow(context, row)
+    }
+
+    override fun videoCell(
+        context: VideoGroupsWriter.Context,
+        video: Video
+    ): String {
+        return super.videoCell(context, video)
+    }
+
+    override fun emptyCell(context: VideoGroupsWriter.Context): String {
+        return super.emptyCell(context)
+    }
 
 
+
+
+
+    private val VideoGroup.wordPressId: UUID
+        get() =
+            UUID.nameUUIDFromBytes(year.toString().toByteArray())
 
 }

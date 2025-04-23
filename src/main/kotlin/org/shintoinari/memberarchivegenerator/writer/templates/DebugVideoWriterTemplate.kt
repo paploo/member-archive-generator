@@ -14,11 +14,20 @@ class DebugVideoWriterTemplate : CallbackTemplate() {
     override fun startRow(
         context: VideoGroupsWriter.Context,
         row: VideoGroup.Row
-    ): String = "\t${row.date}\n"
+    ): String = "     ${row.date}    "
+
+    override fun endRow(
+        context: VideoGroupsWriter.Context,
+        row: VideoGroup.Row
+    ): String = "\n"
 
     override fun videoCell(
         context: VideoGroupsWriter.Context,
         video: Video
-    ): String = "\t\t${video}\n"
+    ): String = video.titleEn.toString().padEnd(80)
+
+    override fun emptyCell(
+        context: VideoGroupsWriter.Context
+    ): String = ".".padEnd(80)
 
 }
