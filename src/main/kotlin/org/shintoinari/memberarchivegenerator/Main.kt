@@ -22,6 +22,7 @@ object Main {
 
     suspend fun main(args: Array<String>): Unit =
         ApplicationArgs.parse(args).map { config ->
+            logger.info("Application config: {}", config)
             VideosGroupApplication(config)
         }.flatMap { application ->
             application.run()

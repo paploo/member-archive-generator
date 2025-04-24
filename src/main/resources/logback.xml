@@ -5,7 +5,7 @@
     <import class="ch.qos.logback.core.ConsoleAppender"/>
 
     <!-- Use java -Dlog.level-DEBUG to get developer level log output -->
-    <property name="log.level" value="${log.level:-ERROR}"/>
+    <property name="log.level" value="${log.level:-INFO}"/>
 
     <appender name="STDERR" class="ConsoleAppender">
         <target>System.err</target>

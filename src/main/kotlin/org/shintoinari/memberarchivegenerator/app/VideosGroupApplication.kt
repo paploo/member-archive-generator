@@ -5,9 +5,9 @@ import org.shintoinari.memberarchivegenerator.prcoessor.VideoGrouper
 import org.shintoinari.memberarchivegenerator.reader.GoogleSheetReader
 import org.shintoinari.memberarchivegenerator.reader.VideosReader
 import org.shintoinari.memberarchivegenerator.util.flatMap
+import org.shintoinari.memberarchivegenerator.util.logger
 import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
-import org.shintoinari.memberarchivegenerator.writer.templates.WordPressSourceTemplate
 import java.io.OutputStreamWriter
 
 class VideosGroupApplication(
@@ -23,8 +23,10 @@ class VideosGroupApplication(
         Result.success(config.inputLocation).flatMap { path ->
             reader.read(config.toReadContext())
         }.map { videos ->
+            logger.info("Found ${videos.size} videos")
             videoGrouper(videos)
         }.map { groups ->
+            logger.info("Collated into ${groups.size} video groups")
             groups.filter { it.year in config.years }
         }.flatMap { groups ->
             writer.write(config.toWriteContext(), groups)

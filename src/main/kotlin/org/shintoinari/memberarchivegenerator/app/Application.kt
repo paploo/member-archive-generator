@@ -20,9 +20,6 @@ interface Application{
      ) {
 
         companion object {
-            operator fun invoke(block: (DSL) -> Unit): Config =
-                DSL().apply(block).toConfig()
-
             /** We set a default path based on where things usually are downloaded in MacOS/Windows */
             val defaultInputLocation: Path = Path(System.getProperty("user.home"), "Downloads", "Video sheet - YouTube Member Videos.csv")
 
@@ -34,20 +31,6 @@ interface Application{
 
             /** By default we want the page contents to replace */
             val defaultOutputFormat: TemplatedVideoGroupsWriter.Format = TemplatedVideoGroupsWriter.Format.Html
-        }
-
-        data class DSL(
-            var inputLocation: Path = defaultInputLocation,
-            var years: Set<Year> = defaultYears,
-            var mode: VideoGroupsWriter.OutputMode = defaultOutputMode,
-            var outputFormat: TemplatedVideoGroupsWriter.Format = defaultOutputFormat,
-        ) {
-            fun toConfig() = Config(
-                inputLocation = inputLocation,
-                years = years,
-                outputMode = mode,
-                outputFormat = outputFormat
-            )
         }
 
     }
