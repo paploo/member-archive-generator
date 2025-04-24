@@ -8,9 +8,17 @@ import org.shintoinari.memberarchivegenerator.util.logger
 import java.io.StringWriter
 
 suspend fun main(args: Array<String>): Unit =
-    Main.main(args)
+    Main.timedMain(args)
 
 object Main {
+
+    suspend fun timedMain(args: Array<String>): Unit {
+        logger.info("Starting Application")
+        val startTime = System.nanoTime()
+        main(args)
+        val endTime = System.nanoTime()
+        logger.info("Application ran in ${(endTime - startTime)/1000000.0} ms.")
+    }
 
     suspend fun main(args: Array<String>): Unit =
         ApplicationArgs.parse(args).map { config ->

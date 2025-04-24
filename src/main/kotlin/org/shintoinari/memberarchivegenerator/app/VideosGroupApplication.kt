@@ -5,16 +5,13 @@ import org.shintoinari.memberarchivegenerator.prcoessor.VideoGrouper
 import org.shintoinari.memberarchivegenerator.reader.GoogleSheetReader
 import org.shintoinari.memberarchivegenerator.reader.VideosReader
 import org.shintoinari.memberarchivegenerator.util.flatMap
-import org.shintoinari.memberarchivegenerator.writer.templates.DebugVideoWriterTemplate
 import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.templates.WordPressSourceTemplate
+import java.io.OutputStreamWriter
 
 class VideosGroupApplication(
     override val config: Application.Config,
-    private val videoGrouper: VideoGrouper = DefaultVideoGrouper(),
-    private val reader: VideosReader = GoogleSheetReader(),
-    private val writer: VideoGroupsWriter = TemplatedVideoGroupsWriter(WordPressSourceTemplate()),
 ) : Application {
 
     /**
@@ -33,6 +30,12 @@ class VideosGroupApplication(
             writer.write(config.toWriteContext(), groups)
         }
 
+    private val videoGrouper: VideoGrouper = DefaultVideoGrouper()
+
+    private val reader: VideosReader = GoogleSheetReader()
+
+    private val writer: VideoGroupsWriter = TemplatedVideoGroupsWriter(config.outputFormat)
+
     private fun Application.Config.toReadContext(): VideosReader.Context =
         VideosReader.Context(
             inputLocation = inputLocation
@@ -42,6 +45,7 @@ class VideosGroupApplication(
         VideoGroupsWriter.Context(
             years = config.years,
             mode = config.outputMode,
+            ioWriter = OutputStreamWriter(System.out)
         )
 
 }

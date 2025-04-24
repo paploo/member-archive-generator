@@ -1,5 +1,6 @@
 package org.shintoinari.memberarchivegenerator.app
 
+import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
 import java.nio.file.Path
 import java.time.Year
@@ -15,6 +16,7 @@ interface Application{
         val inputLocation: Path = defaultInputLocation,
         val years: Set<Year> = defaultYears,
         val outputMode: VideoGroupsWriter.OutputMode = defaultOutputMode,
+        val outputFormat: TemplatedVideoGroupsWriter.Format = defaultOutputFormat,
      ) {
 
         companion object {
@@ -27,19 +29,24 @@ interface Application{
             /** We set this to all the years we currently actively have data for */
             val defaultYears: Set<Year> = (2021 .. Year.now().value).map { Year.of(it) }.toSet()
 
-            /** Most use cases need the year blocks only */
-            val defaultOutputMode: VideoGroupsWriter.OutputMode = VideoGroupsWriter.OutputMode.YearBlocksOnly
+            /** By default we usually just replace the full page contents */
+            val defaultOutputMode: VideoGroupsWriter.OutputMode = VideoGroupsWriter.OutputMode.FullPage
+
+            /** By default we want the page contents to replace */
+            val defaultOutputFormat: TemplatedVideoGroupsWriter.Format = TemplatedVideoGroupsWriter.Format.Html
         }
 
         data class DSL(
             var inputLocation: Path = defaultInputLocation,
             var years: Set<Year> = defaultYears,
             var mode: VideoGroupsWriter.OutputMode = defaultOutputMode,
+            var outputFormat: TemplatedVideoGroupsWriter.Format = defaultOutputFormat,
         ) {
             fun toConfig() = Config(
                 inputLocation = inputLocation,
                 years = years,
                 outputMode = mode,
+                outputFormat = outputFormat
             )
         }
 

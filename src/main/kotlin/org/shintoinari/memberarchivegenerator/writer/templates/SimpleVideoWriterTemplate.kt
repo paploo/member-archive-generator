@@ -4,7 +4,12 @@ import org.shintoinari.memberarchivegenerator.data.Video
 import org.shintoinari.memberarchivegenerator.data.VideoGroup
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
 
-class DebugVideoWriterTemplate : CallbackTemplate() {
+class SimpleVideoWriterTemplate : CallbackTemplate() {
+
+    override fun startPage(
+        context: VideoGroupsWriter.Context,
+        groups: Collection<VideoGroup>
+    ): String = "===== Video Archive =====\n\n"
 
     override fun startGroup(
         context: VideoGroupsWriter.Context,

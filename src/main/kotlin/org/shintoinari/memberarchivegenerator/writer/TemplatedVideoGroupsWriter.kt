@@ -1,13 +1,14 @@
 package org.shintoinari.memberarchivegenerator.writer
 
 import org.shintoinari.memberarchivegenerator.data.VideoGroup
-import java.io.OutputStreamWriter
-import java.io.Writer
+import org.shintoinari.memberarchivegenerator.writer.templates.SimpleVideoWriterTemplate
+import org.shintoinari.memberarchivegenerator.writer.templates.WordPressSourceTemplate
 
 class TemplatedVideoGroupsWriter(
-    val template: Template,
-    val writer: Writer = OutputStreamWriter(System.out),
+    val template: Template
 ) : VideoGroupsWriter {
+
+    constructor(format: Format) : this(format.template)
 
     override suspend fun write(
         context: VideoGroupsWriter.Context,
@@ -16,11 +17,16 @@ class TemplatedVideoGroupsWriter(
         Result.runCatching {
             template.build(context, argument)
         }.mapCatching { html ->
-            writer.use { it.write(html) }
+            context.ioWriter.use { it.write(html) }
         }
 
     interface Template {
         fun build(context: VideoGroupsWriter.Context, groups: Collection<VideoGroup>): String
+    }
+
+    enum class Format(val template: Template) {
+        Simple(SimpleVideoWriterTemplate()),
+        Html(WordPressSourceTemplate());
     }
 
 }

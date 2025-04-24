@@ -12,6 +12,7 @@ interface VideoGroupsWriter : Writer<VideoGroupsWriter.Context, List<VideoGroup>
     data class Context(
         val years: Set<Year>,
         val mode: OutputMode,
+        val ioWriter: java.io.Writer
     )
 
     enum class OutputMode {

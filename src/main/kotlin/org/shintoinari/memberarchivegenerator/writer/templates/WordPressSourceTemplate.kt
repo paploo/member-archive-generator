@@ -7,9 +7,8 @@ import org.shintoinari.memberarchivegenerator.util.en
 import org.shintoinari.memberarchivegenerator.util.format
 import org.shintoinari.memberarchivegenerator.util.jp
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
-import java.time.format.DateTimeFormatter
 import java.util.UUID
-import javax.swing.text.DateFormatter
+import kotlin.text.replaceIndent
 
 class WordPressSourceTemplate : CallbackTemplate() {
 
@@ -80,37 +79,46 @@ class WordPressSourceTemplate : CallbackTemplate() {
         context: VideoGroupsWriter.Context,
         row: VideoGroup.Row
     ): String = """
-        <td class="has-text-align-center" data-align="center">
-            <strong>${row.date.format(ChronoFormatter.en)}</strong>
-            <br>
-            <strong>${row.date.format(ChronoFormatter.jp)}</strong>
-        </td>
-    """.trimIndent() + "\n"
+        <tr/>
+            <td class="has-text-align-center" data-align="center">
+                <strong>${row.date.format(ChronoFormatter.en)}</strong><br><strong>${row.date.format(ChronoFormatter.jp)}</strong>
+            </td>
+    """.replaceIndent(indent(rowIndent)) + "\n"
 
     override fun endRow(
         context: VideoGroupsWriter.Context,
         row: VideoGroup.Row
-    ): String {
-        return super.endRow(context, row)
-    }
+    ): String = """
+        </tr>
+    """.replaceIndent(indent(rowIndent)) + "\n"
 
     override fun videoCell(
         context: VideoGroupsWriter.Context,
         video: Video
-    ): String {
-        return super.videoCell(context, video)
-    }
+    ): String = """
+        <td class="has-text-align-center" data-align="center">
+            <a href="${video.youTubeLink}" target="_blank" rel="noreferrer noopener"><img class="wp-image-6793" style="width: 50px;" src="$youTubeIconSource" alt="Youtube video play icon"></a>
+            <br><strong>${listOf(video.titleEn, video.titleJp).joinToString("<br>")}</strong>
+        </td>
+    """.replaceIndent(indent(rowIndent + 1)) + "\n"
 
-    override fun emptyCell(context: VideoGroupsWriter.Context): String {
-        return super.emptyCell(context)
-    }
+    override fun emptyCell(
+        context: VideoGroupsWriter.Context
+    ): String = """
+        <td class="has-text-align-center" data-align="center"></td>
+    """.replaceIndent(indent(rowIndent + 1)) + "\n"
 
 
-
-
+    private fun indent(level: Int): String = "    ".repeat(level)
+    private val rowIndent = 5
 
     private val VideoGroup.wordPressId: UUID
-        get() =
-            UUID.nameUUIDFromBytes(year.toString().toByteArray())
+        get() = UUID.nameUUIDFromBytes(year.toString().toByteArray())
+
+    private val Video.youTubeLink: String
+        get() = "https://www/youtube.com/watch?v=$youTubeId"
+
+    private val youTubeIconSource =
+        "https://shintoinari.org/wp-content/uploads/2024/05/YouTube_play_button_icon_128.png"
 
 }
