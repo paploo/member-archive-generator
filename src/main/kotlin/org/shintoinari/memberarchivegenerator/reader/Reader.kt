@@ -10,7 +10,7 @@ interface Reader<in C, out R> {
 interface VideosReader : Reader<VideosReader.Context, List<Video>> {
 
     data class Context(
-        val inputLocation: Path
+        val inputFile: Path
     )
 
 }

@@ -10,7 +10,7 @@ data class VideoGroup(
 
     init {
         rows.forEach {
-            assert(it.date.year == year.value) {
+            check(it.date.year == year.value) {
                 "Expected rows to have year ${year.value}, but got ${it.date.year}: $it"
             }
         }

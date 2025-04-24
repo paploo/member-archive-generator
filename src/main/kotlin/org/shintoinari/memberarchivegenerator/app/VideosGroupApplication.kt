@@ -8,6 +8,7 @@ import org.shintoinari.memberarchivegenerator.util.flatMap
 import org.shintoinari.memberarchivegenerator.util.logger
 import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
+import java.io.FileWriter
 import java.io.OutputStreamWriter
 
 class VideosGroupApplication(
@@ -20,7 +21,7 @@ class VideosGroupApplication(
      * 2. Write the domain models out.
      */
     override suspend fun run(): Result<Unit> =
-        Result.success(config.inputLocation).flatMap { path ->
+        Result.success(config.inputFile).flatMap { path ->
             reader.read(config.toReadContext())
         }.map { videos ->
             logger.info("Found ${videos.size} videos")
@@ -40,14 +41,20 @@ class VideosGroupApplication(
 
     private fun Application.Config.toReadContext(): VideosReader.Context =
         VideosReader.Context(
-            inputLocation = inputLocation
+            inputFile = inputFile
         )
 
     private fun Application.Config.toWriteContext(): VideoGroupsWriter.Context =
         VideoGroupsWriter.Context(
             years = config.years,
             mode = config.outputMode,
-            ioWriter = OutputStreamWriter(System.out)
+            ioWriter = config.toOutputWriter()
         )
+
+    private fun Application.Config.toOutputWriter(): java.io.Writer =
+        when(useStdOut) {
+           true -> OutputStreamWriter(System.out)
+           else -> FileWriter(outputFile.toFile()).also { logger.info("Writing to file: ${outputFile.toAbsolutePath()}") }
+        }
 
 }

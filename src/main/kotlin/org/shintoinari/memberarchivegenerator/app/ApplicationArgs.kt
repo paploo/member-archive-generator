@@ -2,6 +2,7 @@ package org.shintoinari.memberarchivegenerator.app
 
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
+import org.shintoinari.memberarchivegenerator.app.Application.Config.Companion.defaultUseStdOut
 import org.shintoinari.memberarchivegenerator.util.valueOfCaseInsensitive
 import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
@@ -10,11 +11,21 @@ import kotlin.io.path.Path
 
 class ApplicationArgs(parser: ArgParser) {
 
-    val inputLocation by parser.storing("-f", "--file",
-        help = "Input file path. Default = \"${Application.Config.defaultInputLocation}\""
+    val inputFile by parser.storing("-i", "--input",
+        help = "Input file path. Default = \"${Application.Config.defaultInputFile}\""
     ) {
         Path(this)
-    }.default(Application.Config.defaultInputLocation)
+    }.default(Application.Config.defaultInputFile)
+
+    val outputFile by parser.storing("-o", "--output",
+        help = "Output file path. Default = \"${Application.Config.defaultOutputFile}\""
+    ) {
+        Path(this)
+    }.default(Application.Config.defaultOutputFile)
+
+    val useStdOut by parser.flagging("--stdout",
+        help = "Output to stdout instead of file. Default = ${Application.Config.defaultUseStdOut}"
+    ).default(defaultUseStdOut)
 
     val years by parser.adding("-y", "--year",
         help = "Year(s) to output (may be supplied multiple times. Default = ${Application.Config.defaultYears}"
@@ -29,14 +40,16 @@ class ApplicationArgs(parser: ArgParser) {
     }.default(Application.Config.defaultOutputMode)
 
 
-    val outputFormat by parser.storing("--format",
+    val outputFormat by parser.storing("-f", "--format",
         help = "Output format ${TemplatedVideoGroupsWriter.Format.entries}. Default = ${Application.Config.defaultOutputFormat}"
     ) {
         valueOfCaseInsensitive<TemplatedVideoGroupsWriter.Format>(this)
     }.default(Application.Config.defaultOutputFormat)
 
     fun toConfig() = Application.Config(
-        inputLocation = inputLocation,
+        inputFile = inputFile,
+        outputFile = outputFile,
+        useStdOut = useStdOut,
         years = years.toSet().ifEmpty { Application.Config.defaultYears },
         outputMode = outputMode,
         outputFormat = outputFormat,

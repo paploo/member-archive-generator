@@ -24,9 +24,9 @@ class TemplatedVideoGroupsWriter(
         fun build(context: VideoGroupsWriter.Context, groups: Collection<VideoGroup>): String
     }
 
-    enum class Format(val template: Template) {
-        Simple(SimpleVideoWriterTemplate()),
-        Html(WordPressSourceTemplate());
+    enum class Format(val template: Template, val fileExtension: String) {
+        Simple(SimpleVideoWriterTemplate(), "txt"),
+        Html(WordPressSourceTemplate(), "html");
     }
 
 }

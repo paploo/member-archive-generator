@@ -26,7 +26,7 @@ class GoogleSheetReader: VideosReader {
      */
     override suspend fun read(context: VideosReader.Context): Result<List<Video>> =
         Result.runCatching {
-            CSVParser.parse(context.inputLocation, StandardCharsets.UTF_8, format)
+            CSVParser.parse(context.inputFile, StandardCharsets.UTF_8, format)
         }.mapCatching { parser ->
             parser.map { it.toVideo() }
         }
