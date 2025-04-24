@@ -10,6 +10,7 @@ import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
 import java.io.FileWriter
 import java.io.OutputStreamWriter
+import kotlin.io.path.extension
 
 class VideosGroupApplication(
     override val config: Application.Config,
@@ -54,7 +55,15 @@ class VideosGroupApplication(
     private fun Application.Config.toOutputWriter(): java.io.Writer =
         when(useStdOut) {
            true -> OutputStreamWriter(System.out)
-           else -> FileWriter(outputFile.toFile()).also { logger.info("Writing to file: ${outputFile.toAbsolutePath()}") }
+           else -> {
+               if (outputFile.extension.lowercase() != outputFormat.fileExtension.lowercase()) {
+                   logger.warn("Output file extension \"${outputFile.extension}\" does not match recommended extension \"${outputFormat.fileExtension}\"; consider changing output file extension.")
+               }
+
+               FileWriter(outputFile.toFile()).also {
+                   logger.info("Writing to file: \"${outputFile.toAbsolutePath()}\"")
+               }
+           }
         }
 
 }

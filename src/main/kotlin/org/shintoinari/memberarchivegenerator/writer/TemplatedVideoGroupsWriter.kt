@@ -26,7 +26,7 @@ class TemplatedVideoGroupsWriter(
 
     enum class Format(val template: Template, val fileExtension: String) {
         Simple(SimpleVideoWriterTemplate(), "txt"),
-        Html(WordPressSourceTemplate(), "html");
+        WordPress(WordPressSourceTemplate(), "html");
     }
 
 }

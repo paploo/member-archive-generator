@@ -38,7 +38,7 @@ interface Application{
             val defaultOutputMode: VideoGroupsWriter.OutputMode = VideoGroupsWriter.OutputMode.FullPage
 
             /** By default we want the page contents to replace */
-            val defaultOutputFormat: TemplatedVideoGroupsWriter.Format = TemplatedVideoGroupsWriter.Format.Html
+            val defaultOutputFormat: TemplatedVideoGroupsWriter.Format = TemplatedVideoGroupsWriter.Format.WordPress
         }
 
     }

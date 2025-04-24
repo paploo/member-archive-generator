@@ -28,7 +28,7 @@ class ApplicationArgs(parser: ArgParser) {
     ).default(defaultUseStdOut)
 
     val years by parser.adding("-y", "--year",
-        help = "Year(s) to output (may be supplied multiple times. Default = ${Application.Config.defaultYears}"
+        help = "Year(s) to output (may be supplied multiple times to output multiple years). Default = ${Application.Config.defaultYears}"
     ) {
         Year.of(this.toInt())
     }
