@@ -11,11 +11,9 @@ interface VideoGrouper : (List<Video>) -> List<VideoGroup>
 class DefaultVideoGrouper : VideoGrouper {
 
     override fun invoke(videos: List<Video>): List<VideoGroup> =
-        videos.filter {
-            it.isActive
-        }.let {
-            toGroups(it)
-        }.sortedByDescending { it.year }
+        toGroups(videos).sortedByDescending {
+            it.year
+        }
 
     private fun toGroups(videos: List<Video>): List<VideoGroup> =
         videos.groupBy {

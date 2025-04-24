@@ -23,21 +23,21 @@ interface Application{
 
         companion object {
             /** We set a default path based on where things usually are downloaded from the sheet in MacOS/Windows */
-            val defaultInputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Video sheet - YouTube Member Videos.csv")
+            val defaultInputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Members Archive - Videos.csv")
 
             /** We set a default to be next to the existing */
-            val defaultOutputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Video sheet - Member Archive Output.html")
+            val defaultOutputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Members Archive - Output.html")
 
             /** By default we write to a file */
             val defaultUseStdOut: Boolean = false
 
             /** We set this to all the years we currently actively have data for */
-            val defaultYears: Set<Year> = (2021 .. Year.now().value).map { Year.of(it) }.toSet()
+            val defaultYears: Set<Year> = (2020 .. Year.now().value).map { Year.of(it) }.toSet()
 
             /** By default we usually just replace the full page contents */
             val defaultOutputMode: VideoGroupsWriter.OutputMode = VideoGroupsWriter.OutputMode.FullPage
 
-            /** By default we want the page contents to replace */
+            /** By default we want the WordPress format */
             val defaultOutputFormat: TemplatedVideoGroupsWriter.Format = TemplatedVideoGroupsWriter.Format.WordPress
         }
 

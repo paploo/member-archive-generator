@@ -25,8 +25,11 @@ class VideosGroupApplication(
         Result.success(config.inputFile).flatMap { path ->
             reader.read(config.toReadContext())
         }.map { videos ->
-            logger.info("Found ${videos.size} videos")
-            videoGrouper(videos)
+            logger.info("Found ${videos.size} total videos")
+            videos.filter { it.isActive }
+        }.map { filteredVideos ->
+            logger.info("Using ${filteredVideos.size} active videos")
+            videoGrouper(filteredVideos)
         }.map { groups ->
             logger.info("Collated into ${groups.size} video groups")
             groups.filter { it.year in config.years }

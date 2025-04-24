@@ -59,16 +59,26 @@ class GoogleSheetReader: VideosReader {
                 "tsukinami-closing" -> Video.Category.TsukinamiClosing
                 "other-sai" -> Video.Category.OtherSai
                 "other-closing" -> Video.Category.OtherCLosing
-                "skip" -> Video.Category.OtherSai //TODO: Make this its own column in sheet.
-                null -> Video.Category.OtherSai //TODO: Fill these in directly in the sheet.
+                null -> throw IllegalArgumentException("Category is required")
                 else -> throw IllegalArgumentException("Unknown category: $it")
             }
         }
 
-        val isActiveField: CsvField<Boolean> = CsvField.OptionalSourceValue("Category") {
-            when (it?.lowercase()?.trim()) {
-                "skip" -> false
-                else -> true
+        val isActiveField: CsvField<Boolean> = CsvField.OptionalSourceValue("Skip") {
+            when(it?.lowercase()?.trim()?.firstOrNull()) {
+                // Skip
+                't' -> true
+                'y' -> true
+
+                //Don't Skip
+                'f' -> false
+                'n' -> false
+                null -> false //If we have no value, we take it as being active
+
+                //Other
+                else -> throw IllegalArgumentException("Unknown value for skip: $it")
+            }.let { shouldSkip ->
+                !shouldSkip
             }
         }
 
