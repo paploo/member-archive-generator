@@ -98,7 +98,7 @@ class WordPressSourceTemplate : CallbackTemplate() {
     ): String = """
         <td class="has-text-align-center" data-align="center">
             <a href="${video.youTubeLink}" target="_blank" rel="noreferrer noopener"><img class="wp-image-6793" style="width: 50px;" src="$youTubeIconSource" alt="Youtube video play icon"></a>
-            <br><strong>${listOf(video.titleEn, video.titleJp).joinToString("<br>")}</strong>
+            <br><strong>${listOfNotNull(video.titleEn, video.titleJp).joinToString("<br>")}</strong>
         </td>
     """.replaceIndent(indent(rowIndent + 1)) + "\n"
 
@@ -116,7 +116,7 @@ class WordPressSourceTemplate : CallbackTemplate() {
         get() = UUID.nameUUIDFromBytes(year.toString().toByteArray())
 
     private val Video.youTubeLink: String
-        get() = "https://www/youtube.com/watch?v=$youTubeId"
+        get() = "https://www.youtube.com/watch?v=$youTubeId"
 
     private val youTubeIconSource =
         "https://shintoinari.org/wp-content/uploads/2024/05/YouTube_play_button_icon_128.png"
