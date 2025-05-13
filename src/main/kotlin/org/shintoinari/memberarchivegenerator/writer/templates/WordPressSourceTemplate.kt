@@ -110,6 +110,7 @@ class WordPressSourceTemplate : CallbackTemplate() {
 
 
     private fun indent(level: Int): String = "    ".repeat(level)
+
     private val rowIndent = 5
 
     private val VideoGroup.wordPressId: UUID
