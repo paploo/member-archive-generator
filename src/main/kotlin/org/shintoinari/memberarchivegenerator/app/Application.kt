@@ -23,7 +23,7 @@ interface Application{
 
         companion object {
             /** We set a default path based on where things usually are downloaded from the sheet in MacOS/Windows */
-            val defaultInputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Members Archive - Videos.csv")
+            val defaultInputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Livestream Links, Archive Video Links, Website Member pages PW - Member Video Archive.csv")
 
             /** We set a default to be next to the existing */
             val defaultOutputFile: Path = Path(System.getProperty("user.home"), "Downloads", "Members Archive - Output.html")

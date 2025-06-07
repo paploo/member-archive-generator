@@ -79,7 +79,7 @@ class WordPressSourceTemplate : CallbackTemplate() {
         context: VideoGroupsWriter.Context,
         row: VideoGroup.Row
     ): String = """
-        <tr/>
+        <tr>
             <td class="has-text-align-center" data-align="center">
                 <strong>${row.date.format(ChronoFormatter.en)}</strong><br><strong>${row.date.format(ChronoFormatter.jp)}</strong>
             </td>

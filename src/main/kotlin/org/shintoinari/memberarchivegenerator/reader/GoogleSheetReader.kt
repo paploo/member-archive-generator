@@ -11,6 +11,7 @@ import org.shintoinari.memberarchivegenerator.util.logger
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class GoogleSheetReader: VideosReader {
 
@@ -50,7 +51,17 @@ class GoogleSheetReader: VideosReader {
         }
 
         val serviceDateField: CsvField<LocalDate> = CsvField.RequiredSourceValue("Service Date") {
-            LocalDate.parse(it)
+            val isoRegex = Regex("""^\d{4}-\d{2}-\d{2}$""") // Matches yyyy-MM-dd
+            val usRegex = Regex("""^(\d{1,2})/(\d{1,2})/(\d{4})$""") // Matches M/D/YYYY
+
+            when {
+                isoRegex.matches(it)  ->
+                    LocalDate.parse(it)
+                usRegex.matches(it) ->
+                    LocalDate.parse(it, DateTimeFormatter.ofPattern("M/d/yyyy"))
+                else ->
+                    throw IllegalArgumentException("Unrecognized date formate for service date: $it")
+            }
         }
 
         val categoryField: CsvField<Video.Category> = CsvField.OptionalSourceValue("Category") {
