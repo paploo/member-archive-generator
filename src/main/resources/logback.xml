@@ -4,7 +4,7 @@
     <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
     <import class="ch.qos.logback.core.ConsoleAppender"/>
 
-    <!-- Use java -Dlog.level-DEBUG to get developer level log output -->
+    <!-- Use java -Dlog.level=DEBUG to get developer level log output -->
     <property name="log.level" value="${log.level:-INFO}"/>
 
     <appender name="STDERR" class="ConsoleAppender">
