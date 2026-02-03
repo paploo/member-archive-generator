@@ -39,14 +39,14 @@ class GoogleSheetReader: VideosReader {
             category = get(CsvFields.categoryField),
             titleEn = get(CsvFields.titleEnField),
             titleJp = get(CsvFields.titleJpField),
-            isActive = get(CsvFields.isActiveField),
+            isSkipped = get(CsvFields.isActiveField),
         ).also {
             logger.debug(it.toString())
         }
 
     private object CsvFields {
 
-        val youTubeIdField: CsvField<String> = CsvField.RequiredSourceValue("ID") {
+        val youTubeIdField: CsvField<String?> = CsvField.OptionalSourceValue("ID") {
             it
         }
 
@@ -88,8 +88,6 @@ class GoogleSheetReader: VideosReader {
 
                 //Other
                 else -> throw IllegalArgumentException("Unknown value for skip: $it")
-            }.let { shouldSkip ->
-                !shouldSkip
             }
         }
 

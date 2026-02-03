@@ -3,13 +3,15 @@ package org.shintoinari.memberarchivegenerator.data
 import java.time.LocalDate
 
 data class Video(
-    val youTubeId: String,
+    val youTubeId: String?,
     val serviceDate: LocalDate,
     val category: Category,
     val titleEn: String?,
     val titleJp: String?,
-    val isActive: Boolean
+    val isSkipped: Boolean,
 ) {
+
+    val isActive: Boolean = !isSkipped && youTubeId != null
 
     val isNotActive: Boolean = !isActive
 
