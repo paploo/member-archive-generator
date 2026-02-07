@@ -47,7 +47,7 @@ class DefaultVideoGrouper : VideoGrouper {
         val tsukinamiSai = vidoesOnDate.filter { it.category == Video.Category.TsukinamiSai }
         val tsukinamiClosing = vidoesOnDate.filter { it.category == Video.Category.TsukinamiClosing }
         val otherSai = vidoesOnDate.filter { it.category == Video.Category.OtherSai }
-        val otherClosing = vidoesOnDate.filter { it.category == Video.Category.OtherCLosing }
+        val otherClosing = vidoesOnDate.filter { it.category == Video.Category.OtherClosing }
 
         // 1. First row with tsukinami_sai and tsukinami_closing, if any
         val tsukinamiRows = buildRows(date, tsukinamiSai, tsukinamiClosing)

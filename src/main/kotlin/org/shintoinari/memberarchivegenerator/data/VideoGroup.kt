@@ -3,6 +3,11 @@ package org.shintoinari.memberarchivegenerator.data
 import java.time.LocalDate
 import java.time.Year
 
+/**
+ * Safely groups videos by year.
+ *
+ * On creation, it throws an exception if any row cannot legally exist in the group.
+ */
 data class VideoGroup(
     val year: Year,
     val rows: List<Row>
@@ -16,6 +21,11 @@ data class VideoGroup(
         }
     }
 
+    /**
+     * Safely groups videos for a single row in the overall video group.
+     *
+     * On creation, it throws an exception if any of the videos cannot legally exist in the row.
+     */
     data class Row(
         val date: LocalDate,
         val saiVideo: Video?,
@@ -23,16 +33,16 @@ data class VideoGroup(
     ) {
 
         init {
-            assert(saiVideo != null || closingVideo != null) {
+            check(saiVideo != null || closingVideo != null) {
                 "Both columns cannot be empty."
             }
 
-            assert(saiVideo?.let { it.serviceDate == date } ?: true ) {
-                "Main column video's date must $date but got ${saiVideo?.serviceDate}."
+            check(saiVideo?.let { it.serviceDate == date } ?: true ) {
+                "Main column video's date must be $date but got ${saiVideo?.serviceDate}."
             }
 
-            assert(closingVideo?.let { it.serviceDate == date } ?: true ) {
-                "Closing column video's date must $date but got ${closingVideo?.serviceDate}."
+            check(closingVideo?.let { it.serviceDate == date } ?: true ) {
+                "Closing column video's date must be $date but got ${closingVideo?.serviceDate}."
             }
         }
 

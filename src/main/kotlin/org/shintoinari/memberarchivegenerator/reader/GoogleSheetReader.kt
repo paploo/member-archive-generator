@@ -9,7 +9,6 @@ import org.shintoinari.memberarchivegenerator.util.CsvFormats
 import org.shintoinari.memberarchivegenerator.util.get
 import org.shintoinari.memberarchivegenerator.util.logger
 import java.nio.charset.StandardCharsets
-import java.nio.file.Path
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -69,7 +68,7 @@ class GoogleSheetReader: VideosReader {
                 "tsukinami-sai" -> Video.Category.TsukinamiSai
                 "tsukinami-closing" -> Video.Category.TsukinamiClosing
                 "other-sai" -> Video.Category.OtherSai
-                "other-closing" -> Video.Category.OtherCLosing
+                "other-closing" -> Video.Category.OtherClosing
                 null -> throw IllegalArgumentException("Category is required")
                 else -> throw IllegalArgumentException("Unknown category: $it")
             }
