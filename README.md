@@ -189,4 +189,17 @@ The main benefit of the distribution is that a `zip` archive of the stand-alone 
 
 ### Architecture
 
-TODO: write a summary overview of the architecture.
+#### Overview
+
+At a high level, the application is split into the following parts:
+1. The `app` namespace, which manages the entry point into the application
+2. A pipeline workflow that executes the logic in the app.
+
+#### Pipeline
+
+The pipeline workflow is composed of a few steps:
+1. A reader to read a set of `Video` objects from a source (e.g. CSV file),
+2. A video filter to select which videos are published (e.g. using `isActive`),
+3. A grouper to group videos into sets (e.g. by year),
+4. A group filter to select which groups are published (e.g. by year selection), and
+5. A writer to write the output (e.g. to terminal or to file).

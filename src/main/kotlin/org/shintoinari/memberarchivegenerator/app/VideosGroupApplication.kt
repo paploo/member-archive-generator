@@ -20,6 +20,8 @@ class VideosGroupApplication(
      * The main application workflow:
      * 1. Read into the domain models,
      * 2. Write the domain models out.
+     *
+     * TODO: Refactor into a first-class pipeline, and make this a PipelineApplication.
      */
     override suspend fun run(): Result<Unit> =
         Result.success(config.inputFile).flatMap { path ->
