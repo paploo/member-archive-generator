@@ -42,7 +42,7 @@ class VideoTest : DescribeSpec({
 
 }) {
 
-    object TestBuilders {
+    internal object TestBuilders {
 
         internal fun buildTestVideo(
             youTubeId: String?,

@@ -127,7 +127,7 @@ class VideoGroupTest : DescribeSpec({
 
 }) {
 
-    object TestBuilders {
+    internal object TestBuilders {
 
         internal fun buildTestVideo(
             serviceDate: LocalDate,

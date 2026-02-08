@@ -38,7 +38,7 @@ class GoogleSheetReader: VideosReader {
             category = get(CsvFields.categoryField),
             titleEn = get(CsvFields.titleEnField),
             titleJp = get(CsvFields.titleJpField),
-            isSkipped = get(CsvFields.isActiveField),
+            isSkipped = get(CsvFields.isSkippedField),
         ).also {
             logger.debug(it.toString())
         }
@@ -74,7 +74,7 @@ class GoogleSheetReader: VideosReader {
             }
         }
 
-        val isActiveField: CsvField<Boolean> = CsvField.OptionalSourceValue("Skip") {
+        val isSkippedField: CsvField<Boolean> = CsvField.OptionalSourceValue("Skip") {
             when(it?.lowercase()?.trim()?.firstOrNull()) {
                 // Skip
                 't' -> true
