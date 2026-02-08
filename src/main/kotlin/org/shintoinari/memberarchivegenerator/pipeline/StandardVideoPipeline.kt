@@ -2,7 +2,7 @@ package org.shintoinari.memberarchivegenerator.pipeline
 
 import org.shintoinari.memberarchivegenerator.data.Video
 import org.shintoinari.memberarchivegenerator.data.VideoGroup
-import org.shintoinari.memberarchivegenerator.prcoessor.VideoGrouper
+import org.shintoinari.memberarchivegenerator.grouper.VideoGrouper
 import org.shintoinari.memberarchivegenerator.reader.VideosReader
 import org.shintoinari.memberarchivegenerator.util.flatMap
 import org.shintoinari.memberarchivegenerator.util.logger
