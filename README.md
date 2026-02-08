@@ -2,6 +2,8 @@
 
 Generator of the Member Video Archive Page for Shinto Shrine of Shusse Inari in America.
 
+https://github.com/paploo/member-archive-generator
+
 ## Initial Setup
 
 For those just running this code:
