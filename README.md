@@ -98,7 +98,7 @@ running and developing this code easiest on the free edition of [IntelliJ IDEA](
 ### Contributing Code Changes
 
 To help in development of this code you must:
-1. Have a github account
+1. Have a github account, and 
 2. Either be added as a collaborator or make your own fork the repository.
 
 Users of this code are expected to make pull requests for any changes to this code base, so that the changes may become
