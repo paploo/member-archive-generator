@@ -15,49 +15,47 @@ import kotlin.io.path.extension
 /**
  * Invokes a `StandardVideoPipeline`, bridging the gap between the application configuration and the pipeline.
  */
-class StandardVideoPipelineApplication(
-    override val config: Application.Config,
-) : Application {
+object StandardVideoPipelineApplication : Application {
 
     /**
      * The main application pipeline.
      */
-    override suspend fun run(): Result<Unit> =
-        pipeline.invoke(config.toVideoPipelineInput())
+    override suspend fun invoke(args: Application.Arguments): Result<Unit> =
+        pipeline(args).invoke(args.toVideoPipelineInput())
 
     /**
      * Constructs the appropriate pipeline for the application configuration.
      */
-    private val pipeline: VideoPipeline<StandardVideoPipeline.Input> = StandardVideoPipeline(
+    private fun pipeline(args: Application.Arguments): VideoPipeline<StandardVideoPipeline.Input> = StandardVideoPipeline(
         reader = GoogleSheetReader(),
         writer = TemplatedVideoGroupsWriter(TemplatedVideoGroupsWriter.Format.Simple),
         grouper = DefaultVideoGrouper(),
         videoFilter = { it.isActive },
-        groupFilter = { it.year in config.years }
+        groupFilter = { it.year in args.years }
     )
 
     /**
      * Constructs the appropriate input for the configured video pipeline.
      */
-    private fun Application.Config.toVideoPipelineInput(): StandardVideoPipeline.Input =
+    private fun Application.Arguments.toVideoPipelineInput(): StandardVideoPipeline.Input =
         StandardVideoPipeline.Input(
             readerContext = toReadContext(),
             writerContext = toWriteContext()
         )
 
-    private fun Application.Config.toReadContext(): VideosReader.Context =
+    private fun Application.Arguments.toReadContext(): VideosReader.Context =
         VideosReader.Context(
             inputFile = inputFile
         )
 
-    private fun Application.Config.toWriteContext(): VideoGroupsWriter.Context =
+    private fun Application.Arguments.toWriteContext(): VideoGroupsWriter.Context =
         VideoGroupsWriter.Context(
             years = years,
             mode = outputMode,
             ioWriter = toOutputWriter()
         )
 
-    private fun Application.Config.toOutputWriter(): java.io.Writer =
+    private fun Application.Arguments.toOutputWriter(): java.io.Writer =
         when(useStdOut) {
            true -> OutputStreamWriter(System.out)
            else -> {

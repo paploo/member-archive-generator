@@ -1,15 +1,21 @@
 package org.shintoinari.memberarchivegenerator
 
 import com.xenomachina.argparser.ShowHelpException
-import org.shintoinari.memberarchivegenerator.app.ApplicationArgs
+import org.shintoinari.memberarchivegenerator.app.ApplicationCommandLineArgs
 import org.shintoinari.memberarchivegenerator.app.StandardVideoPipelineApplication
 import org.shintoinari.memberarchivegenerator.util.flatMap
 import org.shintoinari.memberarchivegenerator.util.logger
 import java.io.StringWriter
 
+/**
+ * The main entry point for the application, orchestrating the execution of the `Application` instance.
+ */
 suspend fun main(args: Array<String>): Unit =
     Main.timedMain(args)
 
+/**
+ * High-level helpers for invoking an Application.
+ */
 object Main {
 
     suspend fun timedMain(args: Array<String>): Unit {
@@ -21,11 +27,9 @@ object Main {
     }
 
     suspend fun main(args: Array<String>): Unit =
-        ApplicationArgs.parse(args).map { config ->
+        ApplicationCommandLineArgs.parse(args).flatMap { config ->
             logger.info("Application config: {}", config)
-            StandardVideoPipelineApplication(config)
-        }.flatMap { application ->
-            application.run()
+            StandardVideoPipelineApplication.invoke(config)
         }.recover { th ->
             when (th) {
                 is ShowHelpException -> println(th.helpMessage())
