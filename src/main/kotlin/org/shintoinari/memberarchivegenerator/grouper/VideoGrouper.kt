@@ -1,4 +1,4 @@
-package org.shintoinari.memberarchivegenerator.prcoessor
+package org.shintoinari.memberarchivegenerator.grouper
 
 import org.shintoinari.memberarchivegenerator.data.Video
 import org.shintoinari.memberarchivegenerator.data.VideoGroup

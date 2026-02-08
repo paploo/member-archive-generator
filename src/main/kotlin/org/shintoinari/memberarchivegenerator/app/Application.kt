@@ -6,13 +6,16 @@ import java.nio.file.Path
 import java.time.Year
 import kotlin.io.path.Path
 
-interface Application{
+/**
+ * The core Application interface, serving as the entry point for actually doing work.
+ *
+ * Applications work on a model of:
+ * 1. Creating an application `Arguments` object, which contains the state for running the application, and
+ * 2. Invoking the application via `invoke`, which executes the logic against the config.
+ */
+interface Application : suspend (Application.Arguments) -> Result<Unit> {
 
-    val config: Config
-
-    suspend fun run(): Result<Unit>
-
-    data class Config(
+    data class Arguments(
         val inputFile: Path,
         val outputFile: Path,
         val useStdOut: Boolean,
