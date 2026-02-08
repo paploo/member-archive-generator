@@ -4,9 +4,14 @@ Generator of the Member Video Archive Page for Shinto Shrine of Shusse Inari in 
 
 ## Initial Setup
 
-1. Install JDK 21 or higher. ([Temurin](https://adoptium.net/temurin/releases) is recommended).
-2. Navigate to the project directory: `cd member-archive-generator`
-3. Build the project: `./gradlew clean build test`
+For those just running this code:
+1. Install JDK 21 or higher. ([Temurin](https://adoptium.net/temurin/releases) is recommended)
+2. Ensure `git` is installed on your system (https://github.com/git-guides/install-git)
+3. Clone the code hosted at https://github.com/paploo/member-archive-generator
+4. Navigate to the project directory: `cd member-archive-generator`
+5. Build the project from the command line: `./gradlew clean build test`
+6. Check the code runs on the command line: `./gradlew run --args="--help"`
+7. (Optional) Install the [Intellij IDE](https://www.jetbrains.com/idea/) and run from there.
 
 ## Downloading the CSV File of Videos
 
@@ -48,6 +53,11 @@ Thus, the full command is
 
 ### WordPress Template Output
 
+To update the actual page, we need to generate the WordPress output. By default, this output is tailored for giving
+the entire block of HTML to be copy/pasted into the WordPress editor in the `Code Editor` mode. This:
+1. Greatly reduces the risk of errors since we don't have to try to fine the right place to copy/paste individual table rows.
+2. Makes it easy to change the entire page by updating the templates in this code. 
+
 To run the program with the downloaded CSV file, use the following options:
 - `--format WordPress` to get the word press output
 - `--output '/path/to/output/file.html'` to select the output file, if the default path is 
@@ -82,3 +92,12 @@ The core tools used are:
 
 Kotlin is developed by JetBrains, maker of [IntelliJ IDEA](https://www.jetbrains.com/idea/); as such you'll find
 running and developing this code easiest on the free edition of [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+
+### Contributing Code Changes
+
+To help in development of this code you must:
+1. Have a github account
+2. Either be added as a collaborator or make your own fork the repository.
+
+Users of this code are expected to make pull requests for any changes to this code base, so that the changes may become
+available to all member page maintainers.
