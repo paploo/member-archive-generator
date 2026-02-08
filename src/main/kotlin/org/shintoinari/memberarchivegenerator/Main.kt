@@ -2,7 +2,7 @@ package org.shintoinari.memberarchivegenerator
 
 import com.xenomachina.argparser.ShowHelpException
 import org.shintoinari.memberarchivegenerator.app.ApplicationArgs
-import org.shintoinari.memberarchivegenerator.app.VideosGroupApplication
+import org.shintoinari.memberarchivegenerator.app.StandardVideoPipelineApplication
 import org.shintoinari.memberarchivegenerator.util.flatMap
 import org.shintoinari.memberarchivegenerator.util.logger
 import java.io.StringWriter
@@ -23,7 +23,7 @@ object Main {
     suspend fun main(args: Array<String>): Unit =
         ApplicationArgs.parse(args).map { config ->
             logger.info("Application config: {}", config)
-            VideosGroupApplication(config)
+            StandardVideoPipelineApplication(config)
         }.flatMap { application ->
             application.run()
         }.recover { th ->

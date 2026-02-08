@@ -1,10 +1,10 @@
 package org.shintoinari.memberarchivegenerator.app
 
+import org.shintoinari.memberarchivegenerator.pipeline.StandardVideoPipeline
+import org.shintoinari.memberarchivegenerator.pipeline.VideoPipeline
 import org.shintoinari.memberarchivegenerator.prcoessor.DefaultVideoGrouper
-import org.shintoinari.memberarchivegenerator.prcoessor.VideoGrouper
 import org.shintoinari.memberarchivegenerator.reader.GoogleSheetReader
 import org.shintoinari.memberarchivegenerator.reader.VideosReader
-import org.shintoinari.memberarchivegenerator.util.flatMap
 import org.shintoinari.memberarchivegenerator.util.logger
 import org.shintoinari.memberarchivegenerator.writer.TemplatedVideoGroupsWriter
 import org.shintoinari.memberarchivegenerator.writer.VideoGroupsWriter
@@ -12,38 +12,38 @@ import java.io.FileWriter
 import java.io.OutputStreamWriter
 import kotlin.io.path.extension
 
-class VideosGroupApplication(
+/**
+ * Invokes a `StandardVideoPipeline`, bridging the gap between the application configuration and the pipeline.
+ */
+class StandardVideoPipelineApplication(
     override val config: Application.Config,
 ) : Application {
 
     /**
-     * The main application workflow:
-     * 1. Read into the domain models,
-     * 2. Write the domain models out.
-     *
-     * TODO: Refactor into a first-class pipeline, and make this a PipelineApplication.
+     * The main application pipeline.
      */
     override suspend fun run(): Result<Unit> =
-        Result.success(config.inputFile).flatMap { path ->
-            reader.read(config.toReadContext())
-        }.map { videos ->
-            logger.info("Found ${videos.size} total videos")
-            videos.filter { it.isActive }
-        }.map { filteredVideos ->
-            logger.info("Using ${filteredVideos.size} active videos")
-            videoGrouper(filteredVideos)
-        }.map { groups ->
-            logger.info("Collated into ${groups.size} video groups")
-            groups.filter { it.year in config.years }
-        }.flatMap { groups ->
-            writer.write(config.toWriteContext(), groups)
-        }
+        pipeline.invoke(config.toVideoPipelineInput())
 
-    private val videoGrouper: VideoGrouper = DefaultVideoGrouper()
+    /**
+     * Constructs the appropriate pipeline for the application configuration.
+     */
+    private val pipeline: VideoPipeline<StandardVideoPipeline.Input> = StandardVideoPipeline(
+        reader = GoogleSheetReader(),
+        writer = TemplatedVideoGroupsWriter(TemplatedVideoGroupsWriter.Format.Simple),
+        grouper = DefaultVideoGrouper(),
+        videoFilter = { it.isActive },
+        groupFilter = { it.year in config.years }
+    )
 
-    private val reader: VideosReader = GoogleSheetReader()
-
-    private val writer: VideoGroupsWriter = TemplatedVideoGroupsWriter(config.outputFormat)
+    /**
+     * Constructs the appropriate input for the configured video pipeline.
+     */
+    private fun Application.Config.toVideoPipelineInput(): StandardVideoPipeline.Input =
+        StandardVideoPipeline.Input(
+            readerContext = toReadContext(),
+            writerContext = toWriteContext()
+        )
 
     private fun Application.Config.toReadContext(): VideosReader.Context =
         VideosReader.Context(
@@ -52,9 +52,9 @@ class VideosGroupApplication(
 
     private fun Application.Config.toWriteContext(): VideoGroupsWriter.Context =
         VideoGroupsWriter.Context(
-            years = config.years,
-            mode = config.outputMode,
-            ioWriter = config.toOutputWriter()
+            years = years,
+            mode = outputMode,
+            ioWriter = toOutputWriter()
         )
 
     private fun Application.Config.toOutputWriter(): java.io.Writer =
