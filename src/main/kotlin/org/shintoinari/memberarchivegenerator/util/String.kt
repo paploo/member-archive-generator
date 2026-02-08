@@ -1,8 +1,14 @@
 package org.shintoinari.memberarchivegenerator.util
 
+/**
+ * Converts a string of standard (ASCII) digits to their full-width Unicode equivalents.
+ */
 fun String.toFullWidthNumeric(): String =
     String(map { it.toFullWidthNumeric() }.toCharArray())
 
+/**
+ * Converts a single standard (ASCII) digit to its full-width Unicode equivalent.
+ */
 fun Char.toFullWidthNumeric(): Char = when {
     this in '0'..'9' -> {
         // The offset between ASCII digits and full-width digits in Unicode

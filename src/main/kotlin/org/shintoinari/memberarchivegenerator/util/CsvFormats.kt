@@ -2,6 +2,9 @@ package org.shintoinari.memberarchivegenerator.util
 
 import org.apache.commons.csv.CSVFormat
 
+/**
+ * Defines the `CSVFormat` to use for the CSV Parser.
+ */
 object CsvFormats {
 
     val default: CSVFormat = CSVFormat.Builder
