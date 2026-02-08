@@ -81,7 +81,7 @@ To use the WordPress Output File, you must:
 7. Inspect the page in the new tab (e.g. check that all years are present and populated with the expected videos,
    and that vidoes are correctly linked to YouTube). 
 8. Close the preview tab.
-8. To publish: In the page editor tab, click the blue "Save" button in the top-right. **THIS WILL IMMEDIATELY PUBLISH THE PAGE**
+9. To publish: In the page editor tab, click the blue "Save" button in the top-right. **THIS WILL IMMEDIATELY PUBLISH THE PAGE**
 
 ## Development
 
