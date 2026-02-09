@@ -1,0 +1,46 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build and test
+        run: ./gradlew clean build test installDist
+
+      - name: Extract version from zip filename
+        id: version
+        run: |
+          ZIP_FILE=$(ls build/distributions/*.zip | head -n 1)
+          FILENAME=$(basename "$ZIP_FILE")
+          VERSION=$(echo "$FILENAME" | sed 's/member-archive-generator-\(.*\)\.zip/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "zip_file=$ZIP_FILE" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Release ${{ steps.version.outputs.version }}
+          files: ${{ steps.version.outputs.zip_file }}
+          draft: false
+          prerelease: false

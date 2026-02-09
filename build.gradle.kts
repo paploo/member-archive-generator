@@ -1,3 +1,6 @@
+import java.time.ZonedDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import org.gradle.kotlin.dsl.provideDelegate
 import com.adarshr.gradle.testlogger.theme.ThemeType
 
@@ -16,7 +19,7 @@ plugins {
 }
 
 group = "org.shintoinari"
-version = "1.0-SNAPSHOT"
+version = "1.${ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyyMMdd.HHmmss"))}"
 
 repositories {
     mavenCentral()
