@@ -1,7 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="MainKt (Default)" type="JetRunConfigurationType">
+  <configuration default="false" name="MainKt (Wordpress)" type="JetRunConfigurationType">
     <option name="MAIN_CLASS_NAME" value="org.shintoinari.memberarchivegenerator.MainKt" />
     <module name="member-archive-generator.main" />
+    <option name="PROGRAM_PARAMETERS" value="--format WordPress" />
     <shortenClasspath name="NONE" />
     <method v="2">
       <option name="Make" enabled="true" />
