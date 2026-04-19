@@ -28,7 +28,7 @@ object StandardVideoPipelineApplication : Application {
      */
     private fun pipeline(args: Application.Arguments): VideoPipeline<StandardVideoPipeline.Input> = StandardVideoPipeline(
         reader = GoogleSheetReader(),
-        writer = TemplatedVideoGroupsWriter(TemplatedVideoGroupsWriter.Format.Simple),
+        writer = TemplatedVideoGroupsWriter(args.outputFormat),
         grouper = DefaultVideoGrouper(),
         videoFilter = { it.isActive },
         groupFilter = { it.year in args.years }
