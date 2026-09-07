@@ -98,16 +98,17 @@ To run the program with the downloaded CSV file, use the following options:
 ### Using the WordPress Output File
 
 To use the WordPress Output File, you must:
-1. Navigate to the `Member Archives 神道稲荷会メンバー用ビデオ` page in the editor.
-2. From the hamburger menu in the top-right, select `Code Editor`, revealing the underlying page HTML.
-3. Open the output HTML file in a text editor, and copy the **entire** contents of the file to the clipboard.
-4. In the WordPress Code Editor, paste the **entire** contents of the file into the main code box (DO NOT touch the page title box).
-5. Click `Exit code editor` in the top-right.
-6. From the `View` icon in the top right (loks like a stylized laptop), select `Preview in new tab`.
-7. Inspect the page in the new tab (e.g. check that all years are present and populated with the expected videos,
+1. Login to the Shrine WordPress site.
+2. Navigate to the `Member Archives 神道稲荷会メンバー用ビデオ` page in the editor.
+3. From the hamburger menu in the top-right, select `Code Editor`, revealing the underlying page HTML.
+4. Open the output HTML file in a text editor, and copy the **entire** contents of the file to the clipboard.
+5. In the WordPress Code Editor, paste the **entire** contents of the file into the main code box (DO NOT touch the page title box).
+6. Click `Exit code editor` in the top-right.
+7. From the `View` icon in the top right (loks like a stylized laptop), select `Preview in new tab`.
+8. Inspect the page in the new tab (e.g. check that all years are present and populated with the expected videos,
    and that vidoes are correctly linked to YouTube). 
-8. Close the preview tab.
-9. To publish: In the page editor tab, click the blue "Save" button in the top-right. **THIS WILL IMMEDIATELY PUBLISH THE PAGE**
+9. Close the preview tab.
+10. To publish: In the page editor tab, click the blue "Save" button in the top-right. **THIS WILL IMMEDIATELY PUBLISH THE PAGE**
 
 ## For Developers
 

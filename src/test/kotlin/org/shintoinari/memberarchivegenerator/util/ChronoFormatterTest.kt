@@ -8,6 +8,7 @@ import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class ChronoFormatterTest : DescribeSpec({
 
@@ -57,7 +58,7 @@ class ChronoFormatterTest : DescribeSpec({
         describe("ofPattern(String)") {
 
             it("should create a ChronoFormatter from the provided pattern") {
-                val formatter = ChronoFormatter.ofPattern("yyyy-MM-dd")
+                val formatter = ChronoFormatter.ofPattern("yyyy-MM-dd", Locale.US)
                 val date = LocalDate.of(2024, 6, 15)
 
                 val result = formatter.format(date)
@@ -70,7 +71,7 @@ class ChronoFormatterTest : DescribeSpec({
         describe("ofPattern(String, transform)") {
 
             it("should create a ChronoFormatter from the pattern and apply the transform") {
-                val formatter = ChronoFormatter.ofPattern("yyyy-MM-dd") { "{$it}" }
+                val formatter = ChronoFormatter.ofPattern("yyyy-MM-dd", Locale.US) { "{$it}" }
                 val date = LocalDate.of(2024, 6, 15)
 
                 val result = formatter.format(date)
@@ -146,6 +147,18 @@ class ChronoFormatterTest : DescribeSpec({
             val result = offsetDateTime.format(ChronoFormatter.en)
 
             result shouldBe "March 7, 2024"
+        }
+
+        it("should format an OffsetDateTime in Norht American format even if JVM isn't") {
+            val defaultLocale = Locale.getDefault()
+            try {
+                Locale.setDefault(Locale.JAPAN)
+                val offsetDateTime = OffsetDateTime.of(2024, 3, 7, 14, 30, 45, 0, ZoneOffset.UTC)
+                val result = offsetDateTime.format(ChronoFormatter.en)
+                result shouldBe "March 7, 2024"
+            } finally {
+                Locale.setDefault(defaultLocale)
+            }
         }
 
     }

@@ -2,6 +2,7 @@ package org.shintoinari.memberarchivegenerator.util
 
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
+import java.util.Locale
 
 /**
  * Interface for string formatters of temporal objects.
@@ -40,14 +41,14 @@ interface ChronoFormatter {
         /**
          * Constructs a ChronoFormatter for a given formatting pattern.
          */
-        fun ofPattern(pattern: String) =
-            invoke(DateTimeFormatter.ofPattern(pattern))
+        fun ofPattern(pattern: String, locale: Locale) =
+            ofPattern(pattern, locale) { it }
 
         /**
          * Constructs a ChronoFormatter for a given formatting pattern and an after-formatting lambda function.
          */
-        fun ofPattern(pattern: String, transform: (String) -> String) =
-            invoke(DateTimeFormatter.ofPattern(pattern), transform)
+        fun ofPattern(pattern: String, locale: Locale, transform: (String) -> String) =
+            invoke(DateTimeFormatter.ofPattern(pattern, locale), transform)
     }
 
 }
@@ -61,12 +62,12 @@ fun TemporalAccessor.format(formatter: ChronoFormatter) = formatter.format(this)
  * Constructs a ChronoFormatter for North American date formatting.
  */
 val ChronoFormatter.Companion.en: ChronoFormatter get() =
-    ChronoFormatter.ofPattern("LLLL d, yyyy")
+    ChronoFormatter.ofPattern("LLLL d, yyyy", Locale.US)
 
 /**
  * Constructs a ChronoFormatter for Japanese date formatting with full-width numeric characters.
  */
 val ChronoFormatter.Companion.jp: ChronoFormatter get() =
-    ChronoFormatter.ofPattern("yyyy年M月d日") {
+    ChronoFormatter.ofPattern("yyyy年M月d日", Locale.JAPAN) {
         it.toFullWidthNumeric()
     }
